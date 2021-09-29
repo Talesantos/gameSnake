@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jogo da cobrinha</title>
+</head>
+<body>
+ 
+    <canvas id="stage" width="600" height="600"></canvas>
+    <script type="text/javascript">
+        
+        window.onload = function(){
+ 
+            var stage = document.getElementById('stage');
+            var ctx = stage.getContext("2d");
+            document.addEventListener("keydown", keyPush);
+            setInterval(game, 100);
+ 
+            const vel = 1;
+ 
+            var velocidadex = velocidadey = 0;
+            var posicaox =10;
+            var posicaoy = 15;
+            var tp = 30;
+            var qp = 20;
+            var mx=my=15;
+ 
+            var trail = [];
+            tail = 5;
+ 
+            function game(){
+                posicaox += velocidadex;
+                posicaoy += velocidadey;
+                if (posicaox <0) {
+                    posicaox = qp-1;
+                }
+                if (posicaox > qp-1) {
+                    posicaox = 0;
+                }
+                if (posicaoy < 0) {
+                    posicaoy = qp-1;
+                }
+                if (posicaoy > qp-1) {
+                    posicaoy = 0;
+                }
+ 
+                ctx.fillStyle = "green";
+                ctx.fillRect(0,0, stage.width, stage.height);
+ 
+                ctx.fillStyle = "red";
+                ctx.fillRect(mx*tp, my*tp, tp,tp);
+ 
+                ctx.fillStyle = "yellow";
+                for (var i = 0; i < trail.length; i++) {
+                    ctx.fillRect(trail[i].x*tp, trail[i].y*tp, tp-1,tp-1);
+                    if (trail[i].x == posicaox && trail[i].y == posicaoy)
+                    {
+                        velocidadex = velocidadey=0;
+                        tail =5;
+                    }
+                }
+ 
+                trail.push({x:posicaox,y:posicaoy })
+                while (trail.length > tail) {
+                    trail.shift();
+                }
+ 
+                if (mx==posicaox && my==posicaoy){
+                    tail++;
+                    mx = Math.floor(Math.random()*qp);
+                    my = Math.floor(Math.random()*qp);
+                }
+ 
+            }
+ 
+            function keyPush(event){
+ 
+                switch (event.keyCode) {
+                    case 37: // Left
+                        velocidadex = -vel;
+                        velocidadey = 0;
+                        break;
+                    case 38: // up
+                        velocidadex = 0;
+                        velocidadey = -vel;
+                        break;
+                    case 39: // right
+                        velocidadex = vel;
+                        velocidadey = 0;
+                        break;
+                    case 40: // down
+                        velocidadex = 0;
+                        velocidadey = vel;
+                        break;          
+                    default:
+                        
+                        break;
+                }
+ 
+ 
+            }
+ 
+        }
+ 
+    </script>
+</body>
+</html>
